@@ -31,7 +31,7 @@ public class ClientController : MonoBehaviour
         player = GameObject.Find("player").GetComponent<Rigidbody>();
 
         // Initial connection message containing name
-        username = "theactualnotabuildapp";
+        username = "me";
         ns.Write(Encoding.ASCII.GetBytes(username), 0, username.Length);
     }
 
