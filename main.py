@@ -7,41 +7,32 @@
 """
 
 import socket
-import threading
+import _thread
+import json
 
-host = '127.0.0.1'
+import clientHandler as handler
+
+host = ''
 port = 7622
 
-class client(threading.Thread):
-    def __init__(self, conn, addr):
-        threading.Thread.__init__(self)
-        self.conn = conn
-        self.addr = addr
-    def run(self):
-        while True:
-            data = self.conn.recv(1024)
-
-            if not data:
-                print(addr, ' DISCONNECTED')
-                break
-
-            print(addr, ': ', data.decode('utf-8'))
-    
-            conn.sendall(data)
-
-        conn.close()
-
-
+# Start socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
 
     sock.bind((host, port))
-    sock.listen()
+    sock.listen() 
 
+    # Listen for connections
     while True:
+        
+        # On each connection, send client to a new thread
+        
         (conn, addr) = sock.accept()
 
         print('Connection from: ' , addr)
 
-        t = client(conn, addr)
+        """
+        initialLoginCode = conn.recv(4)
+        decodedLoginCode = 
+        """
         
-        t.start()
+        _thread.start_new_thread(handler.handle_client, (conn, addr))
